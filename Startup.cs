@@ -1,6 +1,8 @@
+using FilmCollection.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -24,6 +26,15 @@ namespace FilmCollection
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            //Add the database
+            services.AddDbContext<FilmCollectionDbContext>(options =>
+            {
+                options.UseSqlite(Configuration["ConnectionStrings:FilmCollectionConnection"]);
+            });
+
+            //Add in the repositories
+            services.AddScoped<IFilmCollectionRepository, EFFilmCollectionRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -40,6 +51,8 @@ namespace FilmCollection
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
+
+            //Lets us use bootstrap
             app.UseStaticFiles();
 
             app.UseRouting();

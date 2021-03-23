@@ -4,10 +4,12 @@
 @{
     ViewBag.Title = "My Movies";
 }
+@model IQueryable<Movie>
+
 
 <div>
     <h1>@ViewBag.Title</h1>
-    <table>
+    <table class="table">
         <thead>
             <tr>
                 <th>Category</th>
@@ -21,7 +23,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (FilmCollection.Models.Movie movie in Model)
+            @foreach (var movie in Model)
             {
                 @if (movie.Title != "Independence Day")
                 {

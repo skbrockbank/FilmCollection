@@ -6,16 +6,23 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using FilmCollection.Models.ViewModels;
 
 namespace FilmCollection.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        
+        //Add the repository
+        private IFilmCollectionRepository _repository;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IFilmCollectionRepository repository)
         {
             _logger = logger;
+
+        //Set the private repository equal to the repository passed in
+        _repository = repository;
         }
 
         public IActionResult Index()
@@ -34,7 +41,7 @@ namespace FilmCollection.Controllers
         {
             if (ModelState.IsValid)
             {
-                TempStorage.AddMovie(newMovie);
+                //_repository.Movies.Add(newMovie);
                 return View("Confirmation", newMovie);
             }
             else
@@ -45,7 +52,8 @@ namespace FilmCollection.Controllers
 
         public IActionResult MyMovies()
         {
-            return View(TempStorage.Movies);
+            //Pass the list of movies into the view
+            return View(_repository.Movies);
         }
 
         public IActionResult MyPodcasts()
