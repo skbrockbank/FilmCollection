@@ -17,7 +17,6 @@ namespace FilmCollection.Models
             //Check if there are any pending migrations and migrate them
             if (context.Database.GetPendingMigrations().Any())
             {
-                //Commented this out because it was throwing an error saying that the Books table already exists
                 context.Database.Migrate();
             }
 
