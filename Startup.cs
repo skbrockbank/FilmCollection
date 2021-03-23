@@ -65,6 +65,9 @@ namespace FilmCollection
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            //Call SeedData to populate database
+            SeedData.EnsurePopulated(app);
         }
     }
 }
