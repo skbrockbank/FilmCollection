@@ -41,7 +41,7 @@ namespace FilmCollection.Controllers
         {
             if (ModelState.IsValid)
             {
-                //_repository.Movies.Add(newMovie);
+                _repository.CreateMovie(newMovie);
                 return View("Confirmation", newMovie);
             }
             else
@@ -65,6 +65,41 @@ namespace FilmCollection.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        public IActionResult Update(int id)
+        {
+            //Pass the movie that needs updating into the view
+            Movie movie = _repository.Movies.Where(x => x.MovieID == id).FirstOrDefault();
+            return View(movie);
+        }
+
+        [HttpPost]
+        public IActionResult Update(Movie movie, int id)
+        {
+            //Update each attribute
+            _repository.Movies.Where(x => x.MovieID == id).FirstOrDefault().Category = movie.Category;
+            _repository.Movies.Where(x => x.MovieID == id).FirstOrDefault().Title = movie.Title;
+            _repository.Movies.Where(x => x.MovieID == id).FirstOrDefault().Year = movie.Year;
+            _repository.Movies.Where(x => x.MovieID == id).FirstOrDefault().Director = movie.Director;
+            _repository.Movies.Where(x => x.MovieID == id).FirstOrDefault().Rating = movie.Rating;
+            _repository.Movies.Where(x => x.MovieID == id).FirstOrDefault().Edited = movie.Edited;
+            _repository.Movies.Where(x => x.MovieID == id).FirstOrDefault().LentTo = movie.LentTo;
+            _repository.Movies.Where(x => x.MovieID == id).FirstOrDefault().Notes = movie.Notes;
+
+            //Save the changes
+            _repository.SaveMovie(movie);
+
+            //Send back to my movies page
+            return RedirectToAction("MyMovies");
+        }
+
+        [HttpPost]
+        public IActionResult Delete(int id)
+        {
+            Movie movie = _repository.Movies.Where(x => x.MovieID == id).FirstOrDefault();
+            _repository.DeleteMovie(movie);
+            return RedirectToAction("MyMovies");
         }
     }
 }

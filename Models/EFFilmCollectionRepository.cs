@@ -27,11 +27,13 @@ namespace FilmCollection.Models
             _context.Add(m);
             _context.SaveChanges();
         }
+
         public void DeleteMovie(Movie m)
         {
             _context.Remove(m);
             _context.SaveChanges();
         }
+
         public void SaveMovie(Movie m)
         {
             _context.SaveChanges();
